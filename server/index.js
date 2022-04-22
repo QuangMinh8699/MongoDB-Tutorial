@@ -1,13 +1,16 @@
+require('dotenv').config()
 const express = require('express');
-const app = express();
+const app = express()
 const port = 3000;
 const authRouter = require('./router/auth');
 
 const mongoose = require('mongoose');
-mongoose.connect('mongodb://127.0.0.1:27017', (err) => {
-    if (!err) console.log('db connected');
-    else console.log('db error');
-})
+mongoose.connect(
+    `mongodb+srv://${process.env.DB_USERNAME}:${process.env.DB_PASSWORD}@cluster0.pwvor.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`
+    , (err) => {
+        if (!err) console.log('db connected');
+        else console.log('db error');
+    })
 
 app.use(express.json())
 
