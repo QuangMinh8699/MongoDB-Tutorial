@@ -3,5 +3,27 @@ content-Type: application/json
 
 {
     "username": "minh1",
-    "password": "minh"
+    "password": "12345"
+}
+
+##############
+
+POST http://localhost:3000/api/auth/login
+content-Type: application/json
+
+{
+    "username": "minh",
+    "password": "12345" 
+}
+
+##############
+POST http://localhost:3000/api/posts
+content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjY0MDZjMzUxMTczNDExNTAwMjgyOGMiLCJpYXQiOjE2NTA3MjI0OTl9.ujfu1Ofi1dTFOhxMZaOOzJAyfoQBPcBwUrya-AFmCDY
+
+{
+    "title": "first post1",
+    "description": "abcb",
+    "url": "jwt.io",
+    "status": "LEARNING" 
 }

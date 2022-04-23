@@ -1,47 +1,122 @@
-const express = require('express')
-const router = express.Router()
-const argon2 = require('argon2')
-const jwt = require('jsonwebtoken')
+const express = require("express");
+const router = express.Router();
+const argon2 = require("argon2");
+const jwt = require("jsonwebtoken");
 
-const User = require('../models/User')
+const User = require("../models/User");
+
+// @route POST api/auth/register
+// @desc Register user
+// @access Public
 
 // router.get('/', (req, res) => res.send('USER ROUTER'))
-router.post('/register', async (req, res) => {
-    const { username, password } = req.body
+router.post("/register", async (req, res) => {
+  const { username, password } = req.body;
 
-    // simple validation
-    if (!username || !password)
-        return res
-            .status(400)
-            .json({ success: false, message: 'Missing username or password' })
+  // simple validation
+  if (!username || !password)
+    return res.status(400).json({
+      success: false,
+      message: "Missing username or password",
+    });
 
-    try {
-        // check for existing user
-        const user = await User.findOne({ username })
+  try {
+    // check for existing user
+    const user = await User.findOne({
+      username,
+    });
 
-        if (user)
-            return res
-                .status(400)
-                .json({ success: false, message: 'Username already taken' })
+    if (user)
+      return res.status(400).json({
+        success: false,
+        message: "Username already taken",
+      });
 
-        // all good
-        const hashedPassword = await argon2.hash(password)
-        const newUser = new User({
-            username,
-            password: hashedPassword
-        })
-        await newUser.save()
+    // all good
+    const hashedPassword = await argon2.hash(password);
+    const newUser = new User({
+      username,
+      password: hashedPassword,
+    });
+    await newUser.save();
 
-        // return token
-        const accessToken = jwt.sign(
-            { userId: newUser._id },
-            process.env.ACCESS_TOKEN_SECRET
-        )
+    // return token
+    const accessToken = jwt.sign(
+      {
+        userId: newUser._id,
+      },
+      process.env.ACCESS_TOKEN_SECRET
+    );
 
-        res.json({ success: true, message: 'user created successfully', accessToken })
-    } catch (error) {
+    res.json({
+      success: true,
+      message: "user created successfully",
+      accessToken,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
 
-    }
-})
+// @route POST api/auth/login
+// @desc login user
+// @access Public
+router.post("/login", async (req, res) => {
+  const { username, password } = req.body;
 
-module.exports = router
+  // simple validation
+  if (!username || !password)
+    return res.status(400).json({
+      success: true,
+      message: "Missing username or password",
+      accessToken,
+    });
+
+  try {
+    // check for existing user
+    const user = await User.findOne({
+      username,
+    });
+    if (!user)
+      return res.status(400).json({
+        success: false,
+        message: "Incorrect username or password",
+      });
+
+    // username found
+    const passwordValid = await argon2.verify(user.password, password);
+    // check password
+    if (!passwordValid)
+      return res.status(400).json({
+        success: false,
+        message: "Incorrect password",
+      });
+
+    // all good
+    // return token
+    const accessToken = jwt.sign(
+      {
+        userId: user._id,
+      },
+      process.env.ACCESS_TOKEN_SECRET
+    );
+
+    res.json({
+      success: true,
+      message: "Logged in successfully",
+      accessToken,
+    });
+  } catch (error) {
+    console.log(error);
+    res.status(500).json({
+      success: false,
+      message: "Internal server error",
+    });
+  }
+});
+
+module.exports = router;
