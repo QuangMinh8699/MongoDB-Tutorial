@@ -2,7 +2,7 @@ POST http://localhost:3000/api/auth/register
 content-Type: application/json
 
 {
-    "username": "minh1",
+    "username": "minh",
     "password": "12345"
 }
 
@@ -19,11 +19,33 @@ content-Type: application/json
 ##############
 POST http://localhost:3000/api/posts
 content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjY0MDZjMzUxMTczNDExNTAwMjgyOGMiLCJpYXQiOjE2NTA3MjI0OTl9.ujfu1Ofi1dTFOhxMZaOOzJAyfoQBPcBwUrya-AFmCDY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjY0MTE0Mjg3NjEyNTg4NTEzNTc1Y2MiLCJpYXQiOjE2NTA3MjUxODZ9.p-3qYZ0MhREjxcTi3nhAgD_26ZpCmY0G1b6co3hROFs
 
 {
-    "title": "first post1",
-    "description": "abcb",
-    "url": "jwt.io",
+    "title": "reactJs",
+    "description": "framework",
+    "url": "reactjs.org",
     "status": "LEARNING" 
 }
+
+##############
+GET http://localhost:3000/api/posts
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjY0MTE0Mjg3NjEyNTg4NTEzNTc1Y2MiLCJpYXQiOjE2NTA3MjUxODZ9.p-3qYZ0MhREjxcTi3nhAgD_26ZpCmY0G1b6co3hROFs
+
+##############
+PUT http://localhost:3000/api/posts/62667aa3d4fd9304b0a69949
+content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjY0MTE0Mjg3NjEyNTg4NTEzNTc1Y2MiLCJpYXQiOjE2NTA3MjUxODZ9.p-3qYZ0MhREjxcTi3nhAgD_26ZpCmY0G1b6co3hROFs
+
+{
+    "title": "reactJS update",
+    "description": "framework2",
+    "url": "reactjs.org",
+    "status": "LEARNING"
+}
+
+##############
+DELETE  http://localhost:3000/api/posts/6264116d87612588513575cf
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2MjY0MTE0Mjg3NjEyNTg4NTEzNTc1Y2MiLCJpYXQiOjE2NTA3MjUxODZ9.p-3qYZ0MhREjxcTi3nhAgD_26ZpCmY0G1b6co3hROFs
+
+ 
